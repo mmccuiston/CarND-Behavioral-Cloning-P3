@@ -3,6 +3,7 @@
 import csv
 import cv2
 import numpy as np
+import time
 
 def load_training_data(directory):
   lines = []
@@ -22,8 +23,17 @@ def load_training_data(directory):
   return images, measurements
 
 
+def preprocess(img):
+  import tensorflow as tf
+  height = 160
+  width = 320
+  print(height)
+  print(width)
+  gray = tf.image.rgb_to_grayscale(img)
+  cropped = tf.image.crop_to_bounding_box(gray, int(height / 2), 0 ,int(height / 2), width)
+  return cropped
 
-
+  
 def train_model(images, measurements):
 
   X_train = np.array(images)
@@ -35,8 +45,11 @@ def train_model(images, measurements):
 
 
   model = Sequential()
-  model.add(Flatten(input_shape=(160,320,3)))
-  model.add(Lambda(lambda x: x / 256.0 - 0.5))
+  model.add(Lambda(lambda img: preprocess(img), input_shape=(160,320,3)))
+  model.add(Flatten())
+  model.add(Lambda(lambda img: img / 256.0 - 0.5))
+  model.add(Dense(50))
+  model.add(Activation('relu'))
   model.add(Dense(50))
   model.add(Activation('relu'))
   model.add(Dense(1))
@@ -59,5 +72,12 @@ def augment(images, measurements):
 
 images, measurements = load_training_data("./training-data")
 images, measurements = augment(images, measurements)
+#images = [preprocess(img) for img in images]
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(24,12))
+plt.imshow(images[0])
+#plt.show()
+
 model = train_model(images, measurements)
 model.save('model.h5')

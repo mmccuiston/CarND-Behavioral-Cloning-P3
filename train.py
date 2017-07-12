@@ -42,18 +42,34 @@ def train_model(images, measurements):
 
   from keras.models import Sequential
   from keras.layers import Flatten, Dense, Activation, Lambda
-
+  from keras.layers.convolutional import Conv2D, Cropping2D
+  from keras.layers.noise import GaussianDropout
 
   model = Sequential()
-  model.add(Lambda(lambda img: preprocess(img), input_shape=(160,320,3)))
-  model.add(Flatten())
-  model.add(Lambda(lambda img: img / 256.0 - 0.5))
-  model.add(Dense(50))
-  model.add(Activation('relu'))
-  model.add(Dense(50))
-  model.add(Activation('relu'))
-  model.add(Dense(1))
-  model.add(Activation('relu'))
+  model.add( Lambda(lambda img: img / 256.0 - 0.5, input_shape=(160,320,3) ) )
+  model.add( Cropping2D( cropping=((50,20), (0,0))))
+  model.add( Conv2D(10, 20,20 ) )
+  model.add( Conv2D(3, 20,20 ) )
+  model.add( Flatten() )
+  model.add( Dense(50) )
+  model.add( Dense(1) )
+
+
+  #model = Sequential()
+  #model.add( Lambda(lambda img: preprocess(img), input_shape=(160,320,3)) )
+  #model.add( Lambda(lambda img: img / 256.0 - 0.5) )
+  #model.add( Conv2D(10, (20,20) ) )
+  #model.add( Activation('relu') )
+  #model.add( GaussianDropout(0.5) )
+  #model.add( Conv2D(3, (20,20) ) )
+  #model.add( Activation('relu') )
+  #model.add( GaussianDropout(0.5) )
+  #model.add( Flatten() )
+  #model.add( Activation('relu') )
+  #model.add( Dense(50) )
+  #model.add( Activation('relu') )
+  #model.add( Dense(1) )
+  #model.add( Activation('relu') )
 
   model.compile(loss='mse', optimizer='adam')
   model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=10)

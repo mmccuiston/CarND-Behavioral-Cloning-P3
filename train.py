@@ -33,44 +33,54 @@ def preprocess(img):
   cropped = tf.image.crop_to_bounding_box(gray, int(height / 2), 0 ,int(height / 2), width)
   return cropped
 
+def basic_model():
+  from keras.models import Sequential
+  from keras.layers import Flatten, Dense, Lambda
+  from keras.layers.convolutional import Conv2D, Cropping2D, MaxPooling2D
+  model = Sequential()
+  model.add( Lambda(lambda img: img / 255.0 - 0.5, input_shape=(160,320,3) ) )
+  model.add( Cropping2D( cropping=((50,20), (0,0))))
+  model.add( Conv2D(6,5,5, activation="relu" ) )
+  model.add( MaxPooling2D() )
+  model.add( Conv2D(6,5,5, activation="relu" ) )
+  model.add( MaxPooling2D() )
+  model.add( Conv2D(6,5,5, activation="relu" ) )
+  model.add( MaxPooling2D() )
   
+  model.add( Flatten() )
+  model.add( Dense(120) )
+  model.add( Dense(84) )
+  model.add( Dense(1) )
+  return model
+
+def advanced_model():
+  from keras.models import Sequential
+  from keras.layers import Flatten, Dense, Lambda
+  from keras.layers.convolutional import Conv2D, Cropping2D
+  model = Sequential()
+  model.add( Lambda(lambda img: img / 255.0 - 0.5, input_shape=(160,320,3) ) )
+  model.add( Cropping2D( cropping=((70,25), (0,0))))
+  model.add( Conv2D(24,5,5, subsample=(2,2), activation="relu" ) )
+  model.add( Conv2D(36,5,5, subsample=(2,2), activation="relu" ) )
+  model.add( Conv2D(48,5,5, subsample=(2,2), activation="relu" ) )
+  model.add( Conv2D(64,3,3, activation="relu" ) )
+  model.add( Conv2D(64,3,3, activation="relu" ) )
+  model.add( Flatten() )
+  model.add( Dense(100) )
+  model.add( Dense(50) )
+  model.add( Dense(10) )
+  model.add( Dense(1) )
+  return model
+
 def train_model(images, measurements):
 
   X_train = np.array(images)
   y_train = np.array(measurements)
 
 
-  from keras.models import Sequential
-  from keras.layers import Flatten, Dense, Activation, Lambda
-  from keras.layers.convolutional import Conv2D, Cropping2D
-  from keras.layers.noise import GaussianDropout
 
-  model = Sequential()
-  model.add( Lambda(lambda img: img / 256.0 - 0.5, input_shape=(160,320,3) ) )
-  model.add( Cropping2D( cropping=((50,20), (0,0))))
-  model.add( Conv2D(10, 20,20 ) )
-  model.add( Conv2D(3, 20,20 ) )
-  model.add( Flatten() )
-  model.add( Dense(50) )
-  model.add( Dense(1) )
-
-
-  #model = Sequential()
-  #model.add( Lambda(lambda img: preprocess(img), input_shape=(160,320,3)) )
-  #model.add( Lambda(lambda img: img / 256.0 - 0.5) )
-  #model.add( Conv2D(10, (20,20) ) )
-  #model.add( Activation('relu') )
-  #model.add( GaussianDropout(0.5) )
-  #model.add( Conv2D(3, (20,20) ) )
-  #model.add( Activation('relu') )
-  #model.add( GaussianDropout(0.5) )
-  #model.add( Flatten() )
-  #model.add( Activation('relu') )
-  #model.add( Dense(50) )
-  #model.add( Activation('relu') )
-  #model.add( Dense(1) )
-  #model.add( Activation('relu') )
-
+  #model = basic_model()
+  model = advanced_model()
   model.compile(loss='mse', optimizer='adam')
   model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=10)
 

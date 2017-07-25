@@ -40,7 +40,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model starts with a normalizion layer and a cropping layer to remove parts of the image above the horizon and below the hood of the vehicle.  Following this the network has 5 convolutional layers.  The first three use a 5x5 kernel and a 2 by 2 stride.  They have 24, 36, and 48 feature maps respectively.  They are also all followed by a RELU activation layer.  There is then two more convolution layers that use a 3x3 kernel, 64 feature maps, and a 1 by 1 stride.  Both of these layers are also followed by RELU activation layers.  The network is then flattened and followed by three fully connected layers of size 100, 50, and 1.
+My model starts with a normalizion layer and a cropping layer to remove parts of the image above the horizon and below the hood of the vehicle.  Following this the network has 5 convolutional layers.  The first three use a 5x5 kernel and a 2 by 2 stride.  They have 24, 36, and 48 feature maps respectively.  They are also all followed by a RELU activation layer.  There is then two more convolution layers that use a 3x3 kernel, 64 feature maps, and a 1 by 1 stride.  Both of these layers are also followed by RELU activation layers.  The network is then flattened and followed by three fully connected layers of size 100, 50, 10, and 1.
 
 
 #### 2. Attempts to reduce overfitting in the model
@@ -55,7 +55,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right side of the road, and driving smoothly around corners.
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right side of the road (with special focus on problematic areas), and driving smoothly around corners.
 
 For details about how I created the training data, see the next section. 
 
@@ -77,7 +77,27 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
+
 The final model architecture (model.py lines 56-73) consisted of a convolution neural network with the following layers and layer sizes ...
+
+| Layer | Description |
+| ______ | ______ |
+| Norm   | Normalization layer |
+| Crop   | Crop input image |
+| Conv2D | 24 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
+| RELU   | RELU activation |
+| Conv2D | 36 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
+| RELU   | RELU activation |
+| Conv2D | 48 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
+| RELU   | RELU activation |
+| Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding |
+| RELU   | RELU activation |
+| Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding |
+| RELU   | RELU activation |
+| Fully Connected | Size 100 |
+| Fully Connected | Size 50 |
+| Fully Connected | Size 10 |
+| Fully Connected | Size 1 |
 
 #### 3. Creation of the Training Set & Training Process
 
@@ -105,4 +125,4 @@ After the collection process and augmentation, I had collected 36406 data points
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 5 as evidenced by the monotonically decreasing validation error. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by the monotonically decreasing validation error. I used an adam optimizer so that manually training the learning rate wasn't necessary.

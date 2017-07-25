@@ -80,24 +80,24 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 The final model architecture (model.py lines 56-73) consisted of a convolution neural network with the following layers and layer sizes ...
 
-| Layer | Description |
-| ______ | ______ |
-| Norm   | Normalization layer |
-| Crop   | Crop input image |
-| Conv2D | 24 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
-| RELU   | RELU activation |
-| Conv2D | 36 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
-| RELU   | RELU activation |
-| Conv2D | 48 feature maps, 5x5 kernel, 2 by 2 stride, valid padding |
-| RELU   | RELU activation |
-| Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding |
-| RELU   | RELU activation |
-| Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding |
-| RELU   | RELU activation |
-| Fully Connected | Size 100 |
-| Fully Connected | Size 50 |
-| Fully Connected | Size 10 |
-| Fully Connected | Size 1 |
+Layer | Description
+--- | ---
+Norm   | Normalization layer
+Crop   | Crop input image
+Conv2D | 24 feature maps, 5x5 kernel, 2 by 2 stride, valid padding
+RELU   | RELU activation
+Conv2D | 36 feature maps, 5x5 kernel, 2 by 2 stride, valid padding
+RELU   | RELU activation
+Conv2D | 48 feature maps, 5x5 kernel, 2 by 2 stride, valid padding
+RELU   | RELU activation
+Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding
+RELU   | RELU activation 
+Conv2D | 64 feature maps, 3x3 kernel, 1 by 1 stride, valid padding
+RELU   | RELU activation
+Fully Connected | Size 100
+Fully Connected | Size 50
+Fully Connected | Size 10
+Fully Connected | Size 1
 
 #### 3. Creation of the Training Set & Training Process
 

@@ -4,13 +4,13 @@
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[recover-dirt]: ./examples/dirt-recover.jpg "Dirt Recovery"
+[recover-turn]: ./examples/turn-recover.jpg "Turn Recovery"
+[recover-line]: ./examples/line-recover.jpg "Line Recovery"
+[recover-bridge]: ./examples/bridge-recover.jpg "Bridge Recovery"
+[center]: ./examples/center.jpg "Center Driving"
+[normal]: ./examples/normal.jpg "Normal"
+[flipped]: ./examples/flipped.jpg "Flipped"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -40,10 +40,14 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
+My model starts with a normalizion layer and a cropping layer to remove parts of the image above the horizon and below the hood of the vehicle.  Following this the network has 5 convolutional layers.  The first three use a 5x5 kernel and a 2 by 2 stride.  They have 24, 36, and 48 feature maps respectively.  They are also all followed by a RELU activation layer.  There is then two more convolution layers that use a 3x3 kernel, 64 feature maps, and a 1 by 1 stride.  Both of these layers are also followed by RELU activation layers.  The network is then flattened and followed by three fully connected layers of size 100, 50, and 1.
 
 
 #### 2. Attempts to reduce overfitting in the model
 
+In order to reduce the likelihood of overfitting I did the following.
+1. Trained the network on a variety of datasets including different driving styles (recovery, center driving, and corners)
+2. I collected stopped training once the validation error began to increase/oscillate.
 
 #### 3. Model parameter tuning
 
@@ -79,23 +83,24 @@ The final model architecture (model.py lines 56-73) consisted of a convolution n
 
 To capture good driving behavior, I first recorded three laps around the track while driving in the center of the lane.
 
-![alt text][image2]
+![alt text][center]
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to recover if it were to steer off the road.  I would stop the recording when going off-road and start the recording when steering back onto the road.  I spent extra time to record more examples in troublesome spots including the bridge and where there were dirt shoulders.  Here are some examples.
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+![alt text][recover-dirt]
+![alt text][recover-line]
+![alt text][recover-bridge]
+![alt text][recover-turn]
 
 Then I repeated this process on track two in order to get more data points.
 
 To augment the data sat, I also flipped images and angles thinking that this would cause the model to generalize better to steer both left and right.
 
-![alt text][image6]
-![alt text][image7]
+![alt text][normal]
+![alt text][flipped]
 
 
-After the collection process, I had X number of data points. I then preprocessed this data by normalizing it.  I then cropped the image to exclude the hood of the vehicle and anything above the horizon.
+After the collection process and augmentation, I had collected 36406 data points. I then preprocessed this data by normalizing it.  I then cropped the image to exclude the hood of the vehicle and anything above the horizon.
 
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 

@@ -1,7 +1,5 @@
 # **Behavioral Cloning** 
 
-* Summarize the results with a written report
-
 [//]: # (Image References)
 
 [recover-dirt]: ./examples/dirt-recover.jpg "Dirt Recovery"
@@ -78,7 +76,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 #### 2. Final Model Architecture
 
 
-The final model architecture (model.py lines 56-73) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 56-73) consisted of a convolution neural network with the following layers and layer sizes.
 
 Layer | Description
 --- | ---

@@ -2,7 +2,6 @@
 
 * Summarize the results with a written report
 
-
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
@@ -60,17 +59,15 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+The overall strategy for deriving a model architecture was to start with a Lenet architecture and see how the model performed.  
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the model to add dropout layers after the pooling layers.  This helped with the overfitting but I still had some trouble keeping the vehicle on the road in autonomous mode.
 
-Then I ... 
+Then I decided to try a more advanced network architecture based on the one created by the NVIDIA automonomous vehicle team.  This architecture used 5 convolution layers ranging in depth from 24-64 and with kernel sizes ranging from 3-5.  All of the convolution layers are followed by a RELU layer.  The convolution layers are then followed by 4 fully connected layers of size 100, 50, 10, and 1.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track.  It usually got stuck at the bridge with the black guard rail and sometimes drove off the road when turning around a corner with a dirt shoulder.  To combat this I took extra care to collect more training samples in these areas where the vehicle performed recovey maneuvers.
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
@@ -97,7 +94,6 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 ![alt text][image6]
 ![alt text][image7]
 
-Etc ....
 
 After the collection process, I had X number of data points. I then preprocessed this data by normalizing it.  I then cropped the image to exclude the hood of the vehicle and anything above the horizon.
 
